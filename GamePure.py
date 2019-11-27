@@ -1,8 +1,28 @@
-import random
 from PIL import Image
 from STATE import State
 import random
 import pygame
+import copy
+
+
+# 将矩阵中的空格字符替换成数字0
+def convert_blank_to_zero(the_mat):
+    mat = copy.deepcopy(the_mat)
+    for i in range(3):
+        for j in range(3):
+            if mat[i][j] == ' ':
+                mat[i][j] = 0
+    return mat
+
+
+# 将矩阵中的空格字符替换成数字0
+def convert_zero_to_blank(the_mat):
+    mat = copy.deepcopy(the_mat)
+    for i in range(3):
+        for j in range(3):
+            if mat[i][j] == 8:
+                mat[i][j] = ' '
+    return mat
 
 
 class GameBoard:
@@ -24,12 +44,14 @@ class GameBoard:
         self.img_path = img_path
         self.map = self.init_map
         self.img = pygame.image.load(self.img_path)
+        # 初始化图版
+        self.s = self.board_init()
 
     def main(self):
-
-        # 初始化图版
-        s = self.board_init()
+        # s = self.board_init()
         # self.draw_button(s)
+        # path = self.solver_1(state)
+        counter = 0
         # 游戏主循环
         while True:
             # 延时32毫秒,相当于FPS=30
@@ -48,7 +70,7 @@ class GameBoard:
                             if self.map == self.win_map:  # 如果当前地图情况和胜利情况相同,就print胜利
                                 print("胜利了！")
             # 背景色填充成灰色
-            s.fill((88, 88, 88))
+            self.s.fill((88, 88, 88))
             # 绘图
             for y in range(3):
                 for x in range(3):
@@ -57,9 +79,9 @@ class GameBoard:
                         continue
                     dx = (i % 3) * 166  # 计算绘图偏移量
                     dy = (int(i / 3)) * 166
-                    s.blit(self.img, (x * 166, y * 166), (dx, dy, 166, 166))
+                    self.s.blit(self.img, (x * 166, y * 166), (dx, dy, 166, 166))
             # 画参考图片
-            s.blit(self.img, (600, 0))
+            self.s.blit(self.img, (600, 0))
             # 刷新界面
             pygame.display.flip()
 
@@ -96,32 +118,21 @@ class GameBoard:
         qwq = 1
         return qwq
 
+    def get_init_map(self):
+        return self.init_map
 
-# 调用函数来自动完成八数码
-def qwq_1(init_map, win_map):
-    init_map = replace_zero_to_blank(init_map)
-    win_map = replace_zero_to_blank(win_map)
-    state = State(init_map, win_map)
-    path = state.solveProblem(win_map)
+    def get_win_map(self):
+        return self.win_map
+
+
+def instantiating(init_map, win_map):
+    temp_init = convert_zero_to_blank(init_map)
+    temp_win = convert_zero_to_blank(win_map)
+    state = State(temp_init, temp_win)
+    path = state.solveProblem(temp_win)
+    temp_init = convert_blank_to_zero(init_map)
+    temp_win = convert_blank_to_zero(win_map)
     return path
-
-
-# 将矩阵中的空格字符替换成数字0
-def replace_blank_to_zero(mat):
-    for i in range(3):
-        for j in range(3):
-            if mat[i][j] == ' ':
-                mat[i][j] = 0
-    return mat
-
-
-# 将矩阵中的空格字符替换成数字0
-def replace_zero_to_blank(mat):
-    for i in range(3):
-        for j in range(3):
-            if mat[i][j] == 0:
-                mat[i][j] = ' '
-    return mat
 
 
 if __name__ == '__main__':
@@ -130,6 +141,9 @@ if __name__ == '__main__':
     # img_PIL = Image.open(imagePath)
     # img_PIL = img_PIL.resize((500, 500))
     # img_PIL.save('test.jpeg')
-
     myGame = GameBoard('./test.jpeg')
+    path = instantiating(myGame.get_init_map(), myGame.get_win_map())
+    # route = []
+    # for mat in path:
+    #     route.append(mat.state)
     myGame.main()
