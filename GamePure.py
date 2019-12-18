@@ -1,7 +1,6 @@
 import random
 import pygame
-import time
-from PIL import Image
+# from PIL import Image
 from STATE2 import State2
 from Astar import *
 from BFS import *
@@ -102,7 +101,7 @@ class GameBoard:
         # 游戏主循环
         while True:
             # 延时32毫秒,相当于FPS=30
-            pygame.time.delay(400)
+            pygame.time.delay(200)
             for event in pygame.event.get():
                 # 窗口的关闭事件
                 if event.type == pygame.QUIT:
@@ -113,7 +112,6 @@ class GameBoard:
                         mouse_state = self.click_button(mx, my)
             print(mouse_state)
 
-            # TODO 用于添加一个模块，可以通过点击对图片进行刷新重来
             if (not mouse_state) or mouse_state == 'NULL':
                 qwq = 1
             elif mouse_state == 'Pause':
@@ -130,12 +128,20 @@ class GameBoard:
                         counter_right = counter_right + 1
             elif mouse_state == 'ReInit':
                 self.board_init()
+                # 背景色填充成白色
+                self.s.fill((255, 255, 255))
+                font = pygame.font.SysFont('microsoft Yahei', 100)
+                surface = font.render('Program Solving.......', True, (255, 200, 10))
+                self.s.blit(surface, (self.map_width-100, self.map_width/2))
+                pygame.display.flip()
                 path_left, run_time_left = self.solver_1(self.map_left)
                 path_right, run_time_middle = self.solver_2(self.map_right)
                 path_middle, run_time_right = self.solver_3(self.map_middle)
                 counter_left = 0
                 counter_middle = 0
                 counter_right = 0
+                mouse_state = 'Start'
+
 
             # 更新绘图状态
             draw_temp_left = path_left[counter_left]
@@ -204,6 +210,19 @@ class GameBoard:
             surface = font.render('ReInit', True, (255, 200, 10))
             self.s.blit(surface, (2*self.map_width + self.block_width+18, self.map_width + 55))
 
+            # 三个程序的求解时间显示
+            font = pygame.font.SysFont('microsoft Yahei', 40)
+            surface = font.render('Ordered Search: '+str(round(run_time_left, 4)) + '  Length: '+str(len(path_left)),
+                                  True, (255, 200, 10))
+            self.s.blit(surface, (0, self.map_width + 10))
+            font = pygame.font.SysFont('microsoft Yahei', 40)
+            surface = font.render('A*: '+str(round(run_time_middle, 4)) + '  Length: '+str(len(path_middle)),
+                                  True, (255, 200, 10))
+            self.s.blit(surface, (self.map_width + self.block_width/2, self.map_width + 10))
+            font = pygame.font.SysFont('microsoft Yahei', 40)
+            surface = font.render('Breadth First: '+str(round(run_time_right, 4)) + '  Length: '+str(len(path_right)),
+                                  True, (255, 200, 10))
+            self.s.blit(surface, (2*self.map_width - 10, self.map_width + 10))
             # 刷新界面
             pygame.display.flip()
 
@@ -278,6 +297,7 @@ class GameBoard:
             route.append(convert_blank_to_zero(mat))
         return route, run_time
 
+    # A*算法
     def solver_2(self, the_map):
         temp_init = convert_zero_to_blank(copy.deepcopy(the_map))
         temp_win = convert_zero_to_blank(copy.deepcopy(self.win_map))
@@ -295,6 +315,7 @@ class GameBoard:
             route.append(convert_blank_to_zero(mat))
         return route, run_time
 
+    # 宽度优先
     def solver_3(self, the_map):
         temp_init = convert_zero_to_blank(copy.deepcopy(the_map))
         temp_win = convert_zero_to_blank(copy.deepcopy(self.win_map))
@@ -312,9 +333,9 @@ class GameBoard:
 
 if __name__ == '__main__':
     # # 图片resize
-    imagePath = './emoji_2.jpeg'
-    img_PIL = Image.open(imagePath)
-    img_PIL = img_PIL.resize((450, 450))
-    img_PIL.save('test.jpeg')
+    # imagePath = './emoji.jpeg'
+    # img_PIL = Image.open(imagePath)
+    # img_PIL = img_PIL.resize((450, 450))
+    # img_PIL.save('test.jpeg')
     myGame = GameBoard('./test.jpeg')
     myGame.main()

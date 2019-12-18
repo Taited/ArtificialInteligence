@@ -157,7 +157,7 @@
       <workItem from="1575271493364" duration="854000" />
       <workItem from="1575286558410" duration="1419000" />
       <workItem from="1576593478330" duration="3054000" />
-      <workItem from="1576642891897" duration="11618000" />
+      <workItem from="1576642891897" duration="13653000" />
     </task>
     <servers />
   </component>
@@ -183,13 +183,14 @@
         <watch expression="myGame.map" language="Python" />
         <watch expression="self.map" language="Python" />
         <watch expression="draw_temp[0][1]" language="Python" />
+        <watch expression="len(path_left)" language="Python" />
       </configuration>
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ArtificialInteligence$UseAlgorithem.coverage" NAME="UseAlgorithem Coverage Results" MODIFIED="1575104378758" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ArtificialInteligence$EIGNTNUM.coverage" NAME="EIGNTNUM Coverage Results" MODIFIED="1576649755059" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/ArtificialInteligence$GamePure.coverage" NAME="GamePure Coverage Results" MODIFIED="1576665039487" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ArtificialInteligence$GamePure.coverage" NAME="GamePure Coverage Results" MODIFIED="1576667068851" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ArtificialInteligence$NumDataClassified.coverage" NAME="NumDataClassified Coverage Results" MODIFIED="1575271748193" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Documents/GitHub/DataGroup" />
   </component>
 </project>
