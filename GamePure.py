@@ -1,6 +1,5 @@
-import random
+from random import randint
 import pygame
-# from PIL import Image
 from STATE2 import State2
 from Astar import *
 from BFS import *
@@ -80,43 +79,16 @@ class GameBoard:
     # 加载图片
     def __init__(self, img_path):
         self.img_path = img_path
-        # 初始化左中右三张地图
-        self.map_left = self.init_map
-        self.map_middle = self.map_left
-        self.map_right = self.map_left
         # 载入图片
         self.img = pygame.image.load(self.img_path)
         # 初始化图版
         self.s = self.board_init()
 
     def main(self):
-        self.board_init()
-        path_left, run_time_left = self.solver_1(self.map_left)
-        path_right, run_time_right = self.solver_2(self.map_right)
-        path_middle, run_time_middle = self.solver_3(self.map_middle)
-        counter_left = 0
-        counter_middle = 0
-        counter_right = 0
-        mouse_state = 'Start'
+        mouse_state = 'ReInit'
         # 游戏主循环
         while True:
-            # 延时32毫秒,相当于FPS=30
-            pygame.time.delay(200)
-            for event in pygame.event.get():
-                # 窗口的关闭事件
-                if event.type == pygame.QUIT:
-                    exit()
-                elif event.type == pygame.MOUSEBUTTONDOWN:  # 鼠标单击事件
-                    if pygame.mouse.get_pressed() == (1, 0, 0):  # 鼠标左键按下
-                        mx, my = pygame.mouse.get_pos()  # 获得当前鼠标坐标
-                        mouse_state = self.click_button(mx, my)
-            print(mouse_state)
-
-            if (not mouse_state) or mouse_state == 'NULL':
-                qwq = 1
-            elif mouse_state == 'Pause':
-                qwq = 1
-            elif mouse_state == 'Start':
+            if mouse_state == 'Start':
                 if self.map_left != self.win_map:
                     if counter_left + 1 < len(path_left):
                         counter_left = counter_left + 1
@@ -142,6 +114,16 @@ class GameBoard:
                 counter_right = 0
                 mouse_state = 'Start'
 
+            # 延时200毫秒,相当于FPS=200
+            pygame.time.delay(200)
+            for event in pygame.event.get():
+                # 窗口的关闭事件
+                if event.type == pygame.QUIT:
+                    exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:  # 鼠标单击事件
+                    if pygame.mouse.get_pressed() == (1, 0, 0):  # 鼠标左键按下
+                        mx, my = pygame.mouse.get_pos()  # 获得当前鼠标坐标
+                        mouse_state = self.click_button(mx, my)
 
             # 更新绘图状态
             draw_temp_left = path_left[counter_left]
@@ -233,6 +215,10 @@ class GameBoard:
         pygame.display.set_caption('拼图游戏')
         # 窗口大小
         s = pygame.display.set_mode((self.map_width*3, self.map_width+100))
+        # 初始化左中右三张地图
+        self.map_left = self.init_map
+        self.map_middle = self.map_left
+        self.map_right = self.map_left
         # 随机地图
         self.rand_map()
         # self.map_right = [
@@ -278,9 +264,9 @@ class GameBoard:
 
     # 打乱地图
     def rand_map(self):
-        for i in range(30):
-            x = random.randint(0, 2)
-            y = random.randint(0, 2)
+        for i in range(12):
+            x = randint(0, 2)
+            y = randint(0, 2)
             self.click_map(x, y)
 
     def solver_1(self, the_map):
